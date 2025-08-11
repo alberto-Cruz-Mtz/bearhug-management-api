@@ -33,5 +33,5 @@ build/
 .vscode/
 &
 ## keys and environment variables
+/env.properties
 src/main/resources/key
-*.env
