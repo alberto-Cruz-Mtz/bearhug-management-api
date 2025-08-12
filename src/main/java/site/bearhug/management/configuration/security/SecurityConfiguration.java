@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                     http.requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "api/v1/auth/sign-up", "/api/v1/auth/log-in").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/branch/").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.DELETE, "/branch/").hasRole("ADMIN");
                     http.anyRequest().authenticated();

@@ -9,4 +9,6 @@ public interface AuthenticationService {
     Response<String> login(AuthLoginRequest request);
 
     Response<String> register(AuthRegisterRequest request);
+
+    void verifyUser(String username);
 }

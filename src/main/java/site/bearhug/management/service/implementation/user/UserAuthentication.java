@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import site.bearhug.management.persistence.entity.user.RoleEntity;
 import site.bearhug.management.persistence.entity.user.UserEntity;
 import site.bearhug.management.presentation.dto.Response;
+import site.bearhug.management.presentation.dto.model.Email;
 import site.bearhug.management.presentation.dto.request.AuthLoginRequest;
 import site.bearhug.management.presentation.dto.request.AuthRegisterRequest;
 import site.bearhug.management.service.interfaces.AuthenticationService;
+import site.bearhug.management.util.MailSender;
 import site.bearhug.management.util.jwt.JwtUtil;
 
 import java.util.Set;
@@ -25,6 +27,7 @@ public class UserAuthentication implements AuthenticationService {
     private final UserDetailsServiceImpl service;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final MailSender sender;
 
     @Override
     public Response<String> login(AuthLoginRequest request) {
@@ -53,8 +56,21 @@ public class UserAuthentication implements AuthenticationService {
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(userSaved.getUsername(), null, userSaved.getAuthorities());
         String token = this.jwtUtil.generateToken(authentication);
+        this.sender.sendMailVerification(new Email(userSaved.getUsername(), "Verify your account"));
 
         return new Response<>(token, "Success", "user registered successfully", null);
+    }
+
+    @Override
+    public void verifyUser(String username) {
+        UserEntity user = this.service.getByUsername(username);
+
+        if (user.isVerified()) {
+            throw new IllegalArgumentException("User is already verified");
+        }
+
+        user.setVerified(true);
+        this.service.saveUser(user);
     }
 
     private Authentication authenticate(String username, String password) {
@@ -66,5 +82,4 @@ public class UserAuthentication implements AuthenticationService {
 
         return new UsernamePasswordAuthenticationToken(username, password, user.getAuthorities());
     }
-
 }

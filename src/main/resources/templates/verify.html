@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de correo electrónico</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            background-color: #f4f4f7;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #1a237e;
+            color: #ffffff;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 40px;
+            text-align: left;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .content p {
+            margin: 0 0 20px 0;
+            font-size: 16px;
+        }
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .link-text {
+            text-align: center;
+            font-size: 14px;
+            color: #666666;
+            margin-top: 20px;
+        }
+        .link-text a {
+            color: #1a237e;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #999999;
+            border-top: 1px solid #eeeeee;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>¡Bienvenido/a a Bearhug Management!</h1>
+        </div>
+        <div class="content">
+            <p>Hola,</p>
+            <p>Estamos muy emocionados de tenerte a bordo. Para completar la configuración de tu cuenta, solo necesitamos que verifiques tu dirección de correo electrónico. Esto nos ayuda a mantener tu cuenta segura.</p>
+            <div class="button-container">
+                <a href="http://localhost:8080/api/v1/auth/verify?username=${username}" class="button">Verificar mi correo electrónico</a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 Bearhug Management. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

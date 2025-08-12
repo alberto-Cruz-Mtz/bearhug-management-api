@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import site.bearhug.management.presentation.dto.model.Product;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/v1/category")
 public class ProductCategoryController {
 
     private static final Logger log = LogManager.getLogger(ProductCategoryController.class);

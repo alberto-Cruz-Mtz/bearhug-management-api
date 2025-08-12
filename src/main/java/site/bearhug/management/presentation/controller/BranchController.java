@@ -12,7 +12,7 @@ import site.bearhug.management.service.interfaces.BranchService;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/branch")
+@RequestMapping("/api/v1/branch")
 @RequiredArgsConstructor
 public class BranchController {
 

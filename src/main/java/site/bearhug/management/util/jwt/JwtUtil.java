@@ -45,7 +45,7 @@ public class JwtUtil {
     public DecodedJWT verifyToken(String token) {
         try {
             Algorithm algorithm = KeyReading.getAlgorithmRSA(publicKeyPath, privateKeyPath);
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer("Bearhug-Management").build();
+            JWTVerifier verifier = JWT.require(algorithm).withIssuer(secretKey).build();
             return verifier.verify(token);
         } catch (JWTVerificationException exception) {
             throw new InvalidTokenException("Invalid authentication token.");

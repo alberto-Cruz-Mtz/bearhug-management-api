@@ -14,7 +14,7 @@ import site.bearhug.management.service.interfaces.BusinessService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/business")
+@RequestMapping("/api/v1/business")
 @RequiredArgsConstructor
 public class BusinessController {
 

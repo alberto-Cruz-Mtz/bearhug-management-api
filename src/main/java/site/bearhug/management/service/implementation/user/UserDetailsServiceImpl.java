@@ -40,6 +40,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new HashSet<>(roleRepository.findRoleEntitiesByNameIn(roleNames));
     }
 
+    @Transactional(readOnly = true)
+    public UserEntity getByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username not found"));
+    }
+
     private User create(UserEntity entity) {
         return new User(
                 entity.getUsername(),

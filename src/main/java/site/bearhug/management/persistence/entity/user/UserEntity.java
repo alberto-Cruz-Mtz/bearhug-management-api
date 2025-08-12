@@ -22,6 +22,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import site.bearhug.management.persistence.entity.BusinessEntity;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -54,7 +55,13 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private boolean credentialsNonExpired;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @Column(nullable = false, name = "is_verified")
+    private boolean isVerified;
+
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY, targetEntity = RoleEntity.class)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
     private Set<RoleEntity> roles;
 
@@ -83,6 +90,8 @@ public class UserEntity implements UserDetails {
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
                 .roles(roles)
+                .isVerified(false)
+                .createdAt(OffsetDateTime.now())
                 .build();
     }
 }
