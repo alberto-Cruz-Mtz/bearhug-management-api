@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import site.bearhug.management.presentation.dto.Response;
+import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.service.exception.ResourceNotFoundException;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.badRequest().body(new Response<>(
-                errors, "Error", "The application contains validation errors.", null));
+                errors, Status.ERROR, "The application contains validation errors.", null));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

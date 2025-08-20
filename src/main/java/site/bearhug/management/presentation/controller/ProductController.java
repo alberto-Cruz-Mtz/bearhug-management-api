@@ -1,6 +1,5 @@
 package site.bearhug.management.presentation.controller;
 
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;

@@ -9,6 +9,7 @@ import site.bearhug.management.persistence.repository.BranchRepository;
 import site.bearhug.management.persistence.repository.BusinessRepository;
 import site.bearhug.management.presentation.dto.BranchRequest;
 import site.bearhug.management.presentation.dto.Response;
+import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.service.exception.ResourceNotFoundException;
 import site.bearhug.management.service.interfaces.BranchService;
 
@@ -27,7 +28,7 @@ public class BranchServiceImpl implements BranchService {
         BranchEntity branch = new BranchEntity(request.name(), request.address(), request.description(), business);
         BranchEntity savedBranch = repository.save(branch);
 
-        return new Response<>(BranchRequest.of(savedBranch), "Success", "branch created successfully", null);
+        return new Response<>(BranchRequest.of(savedBranch), Status.SUCCESS, "branch created successfully", null);
     }
 
     @Transactional(readOnly = true)
@@ -38,7 +39,7 @@ public class BranchServiceImpl implements BranchService {
     @Override
     @Transactional(readOnly = true)
     public Response<BranchRequest> findBranchById(Long id) {
-        return new Response<>(BranchRequest.of(getBranch(id)), "Success", "branch updated successfully", null);
+        return new Response<>(BranchRequest.of(getBranch(id)), Status.SUCCESS, "branch updated successfully", null);
     }
 
     @Override

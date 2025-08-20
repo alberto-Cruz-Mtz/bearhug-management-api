@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.bearhug.management.presentation.dto.Response;
+import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.presentation.dto.request.AuthLoginRequest;
 import site.bearhug.management.presentation.dto.request.AuthRegisterRequest;
 import site.bearhug.management.service.interfaces.AuthenticationService;
@@ -35,6 +36,6 @@ public class AuthenticationController {
     @PostMapping("/verify")
     public ResponseEntity<Response<Void>> verifyEmail(@RequestParam @NotBlank String username) {
         authenticationService.verifyUser(username);
-        return ResponseEntity.ok(new Response<Void>(null, "success", "email verified successfully", null));
+        return ResponseEntity.ok(new Response<Void>(null, Status.SUCCESS, "email verified successfully", null));
     }
 }

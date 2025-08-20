@@ -1,14 +1,6 @@
 package site.bearhug.management.persistence.entity.products;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +12,21 @@ import site.bearhug.management.persistence.entity.BusinessEntity;
 @Getter
 @Setter
 @Entity
-@Table(name = "product_category")
+@Table(name = "product_category", uniqueConstraints = @UniqueConstraint(columnNames = {"bussiness_id", "name"}))
+
 public class ProductCategoryEntity {
+
+    public ProductCategoryEntity(String categoryName, String description, BusinessEntity business) {
+        this.categoryName = categoryName;
+        this.description = description;
+        this.business = business;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 100, unique = true)
+    @Column(name = "name", nullable = false, length = 100)
     private String categoryName;
 
     @Column(length = 150)

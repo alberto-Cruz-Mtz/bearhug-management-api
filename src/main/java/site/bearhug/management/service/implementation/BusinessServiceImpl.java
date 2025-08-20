@@ -9,6 +9,7 @@ import site.bearhug.management.persistence.entity.user.UserEntity;
 import site.bearhug.management.persistence.repository.BusinessRepository;
 import site.bearhug.management.persistence.repository.user.UserRepository;
 import site.bearhug.management.presentation.dto.Response;
+import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.presentation.dto.request.BusinessRequest;
 import site.bearhug.management.presentation.dto.request.BusinessResponse;
 import site.bearhug.management.service.exception.ResourceNotFoundException;
@@ -33,7 +34,7 @@ public class BusinessServiceImpl implements BusinessService {
         BusinessEntity entity = BusinessEntity.create(request.name(), request.description(), user);
 
         repository.save(entity);
-        return new Response<>(null, "Success", "business created successfully", null);
+        return new Response<>(null, Status.SUCCESS, "negocio creado correctamente", null);
     }
 
     @Transactional
@@ -51,6 +52,6 @@ public class BusinessServiceImpl implements BusinessService {
     @Transactional(readOnly = true)
     public Response<List<BusinessResponse>> findAllBusinessByUsername(String username) {
         List<BusinessResponse> businesses = repository.findAllBusinessByUsername(username).stream().map(BusinessResponse::of).toList();
-        return new Response<>(businesses, "Success", "businesses found successfully", null);
+        return new Response<>(businesses, Status.SUCCESS, "businesses found successfully", null);
     }
 }

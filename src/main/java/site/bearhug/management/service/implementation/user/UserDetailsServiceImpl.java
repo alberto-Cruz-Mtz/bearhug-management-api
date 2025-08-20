@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public UserEntity getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username not found"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 
     private User create(UserEntity entity) {

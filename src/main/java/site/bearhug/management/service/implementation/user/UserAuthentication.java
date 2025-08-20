@@ -12,12 +12,14 @@ import site.bearhug.management.persistence.entity.user.RoleEntity;
 import site.bearhug.management.persistence.entity.user.UserEntity;
 import site.bearhug.management.presentation.dto.Response;
 import site.bearhug.management.presentation.dto.model.Email;
+import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.presentation.dto.request.AuthLoginRequest;
 import site.bearhug.management.presentation.dto.request.AuthRegisterRequest;
 import site.bearhug.management.service.interfaces.AuthenticationService;
 import site.bearhug.management.util.MailSender;
 import site.bearhug.management.util.jwt.JwtUtil;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -38,14 +40,14 @@ public class UserAuthentication implements AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = this.jwtUtil.generateToken(authentication);
-        return new Response<>(token, "Success", "user authenticated successfully", null);
+        return new Response<>(token, Status.SUCCESS, "user authenticated successfully", null);
     }
 
     @Override
     public Response<String> register(AuthRegisterRequest request) {
         String username = request.username();
         String password = request.password();
-        Set<RoleEntity> roles = this.service.getRolesByNameIn(request.roles());
+        Set<RoleEntity> roles = this.service.getRolesByNameIn(List.of("USER"));
 
         if (roles.isEmpty()) {
             throw new IllegalArgumentException("The roles specified does not exist.");
@@ -58,7 +60,7 @@ public class UserAuthentication implements AuthenticationService {
         String token = this.jwtUtil.generateToken(authentication);
         this.sender.sendMailVerification(new Email(userSaved.getUsername(), "Verify your account"));
 
-        return new Response<>(token, "Success", "user registered successfully", null);
+        return new Response<>(token, Status.SUCCESS, "user registered successfully", null);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class UserAuthentication implements AuthenticationService {
         UserEntity user = this.service.getByUsername(username);
 
         if (user.isVerified()) {
-            throw new IllegalArgumentException("User is already verified");
+            throw new IllegalArgumentException("Este usuario ya ha sido verificado");
         }
 
         user.setVerified(true);

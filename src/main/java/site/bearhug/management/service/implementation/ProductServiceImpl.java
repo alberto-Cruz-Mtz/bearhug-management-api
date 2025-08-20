@@ -9,6 +9,7 @@ import site.bearhug.management.persistence.repository.product.ProductCategoryRep
 import site.bearhug.management.persistence.repository.product.ProductRepository;
 import site.bearhug.management.presentation.dto.Response;
 import site.bearhug.management.presentation.dto.model.Product;
+import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.service.exception.ResourceNotFoundException;
 import site.bearhug.management.service.interfaces.ProductService;
 
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
         entity.setBusiness(category.getBusiness());
 
         ProductEntity saved = repository.save(entity);
-        return new Response<>(Product.of(saved), "Success", "Product created successfully", null);
+        return new Response<>(Product.of(saved), Status.SUCCESS, "Product created successfully", null);
     }
 
     @Override
@@ -60,14 +61,14 @@ public class ProductServiceImpl implements ProductService {
         }
 
         ProductEntity saved = repository.save(entity);
-        return new Response<>(Product.of(saved), "Success", "Product updated successfully", null);
+        return new Response<>(Product.of(saved), Status.SUCCESS, "Product updated successfully", null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Response<Product> findProduct(String barcode, String businessId) {
         ProductEntity product = this.findProductEntity(barcode, businessId);
-        return new Response<>(Product.of(product), "Success", "Product found successfully", null);
+        return new Response<>(Product.of(product), Status.SUCCESS, "Product found successfully", null);
     }
 
     @Transactional(readOnly = true)

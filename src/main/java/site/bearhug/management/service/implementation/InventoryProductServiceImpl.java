@@ -11,6 +11,7 @@ import site.bearhug.management.persistence.repository.product.InventoryRepositor
 import site.bearhug.management.persistence.repository.product.ProductRepository;
 import site.bearhug.management.presentation.dto.InventoryProductResponse;
 import site.bearhug.management.presentation.dto.Response;
+import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.presentation.dto.request.ProductInventoryRequest;
 import site.bearhug.management.service.exception.ResourceNotFoundException;
 import site.bearhug.management.service.interfaces.InventoryProductService;
@@ -33,7 +34,7 @@ public class InventoryProductServiceImpl implements InventoryProductService {
 
         InventoryProductEntity inventoryProduct = InventoryProductEntity.create(inventory, product, request.price(), request.stocks());
         InventoryProductEntity saved = repository.save(inventoryProduct);
-        return new Response<>(InventoryProductResponse.of(saved), "Success", "product added to inventory successfully", null);
+        return new Response<>(InventoryProductResponse.of(saved), Status.SUCCESS, "product added to inventory successfully", null);
     }
 
     @Override
@@ -52,14 +53,14 @@ public class InventoryProductServiceImpl implements InventoryProductService {
 
         InventoryProductEntity saved = repository.save(product);
 
-        return new Response<>(InventoryProductResponse.of(saved), "Success", "product updated successfully", null);
+        return new Response<>(InventoryProductResponse.of(saved), Status.SUCCESS, "product updated successfully", null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Response<InventoryProductResponse> findProductInInventory(Long inventoryId, String businessId, String barcode) {
         InventoryProductEntity product = this.findProductInInventory(businessId, barcode, inventoryId);
-        return new Response<>(InventoryProductResponse.of(product), "Success", "product found successfully", null);
+        return new Response<>(InventoryProductResponse.of(product), Status.SUCCESS, "product found successfully", null);
     }
 
     @Transactional(readOnly = true)
