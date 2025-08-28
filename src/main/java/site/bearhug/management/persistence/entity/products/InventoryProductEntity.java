@@ -1,10 +1,7 @@
 package site.bearhug.management.persistence.entity.products;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import site.bearhug.management.presentation.dto.model.InventoryStocks;
 import site.bearhug.management.presentation.dto.model.ProductPrice;
 
@@ -14,6 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "inventory_product")
 public class InventoryProductEntity {

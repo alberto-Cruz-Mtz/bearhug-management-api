@@ -7,11 +7,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import site.bearhug.management.presentation.dto.ProductMatchResponse;
 import site.bearhug.management.presentation.dto.Response;
 import site.bearhug.management.presentation.dto.model.Product;
 import site.bearhug.management.service.interfaces.ProductService;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -38,6 +40,18 @@ public class ProductController {
         log.info("Route (GET): /api/v1/product");
         Response<Product> response = productService.findProduct(barcode, businessId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<Response<List<Product>>> findAll(@RequestParam String businessId){
+      var response = productService.findAllProduct(businessId);
+      return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Response<List<ProductMatchResponse>>> searchByMatch(@RequestParam(required = true) String businessId, @RequestParam(required = true) String match){
+      var response = productService.findByMatch(match, businessId);
+      return ResponseEntity.ok(response);
     }
 
     @PutMapping()

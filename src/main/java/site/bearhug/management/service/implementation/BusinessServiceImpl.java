@@ -51,7 +51,7 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     @Transactional(readOnly = true)
     public Response<List<BusinessResponse>> findAllBusinessByUsername(String username) {
-        List<BusinessResponse> businesses = repository.findAllBusinessByUsername(username).stream().map(BusinessResponse::of).toList();
+        List<BusinessResponse> businesses = repository.findAllBusinessByUsername(username).stream().map(b -> BusinessResponse.of(b, b.getBranches().get(0).getInventory().getId())).toList();
         return new Response<>(businesses, Status.SUCCESS, "businesses found successfully", null);
     }
 }

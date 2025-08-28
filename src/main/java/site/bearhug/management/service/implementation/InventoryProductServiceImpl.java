@@ -16,6 +16,8 @@ import site.bearhug.management.presentation.dto.request.ProductInventoryRequest;
 import site.bearhug.management.service.exception.ResourceNotFoundException;
 import site.bearhug.management.service.interfaces.InventoryProductService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class InventoryProductServiceImpl implements InventoryProductService {
@@ -39,9 +41,10 @@ public class InventoryProductServiceImpl implements InventoryProductService {
 
     @Override
     @Transactional
-    public void removeProductFromInventory(Long inventoryId, String barcode, String businessId) {
+    public Response<Void> removeProductFromInventory(Long inventoryId, String barcode, String businessId) {
         InventoryProductEntity product = findProductInInventory(businessId, barcode, inventoryId);
         repository.delete(product);
+        return new Response<Void>(null, Status.SUCCESS, "producto removido del inventario", null);
     }
 
     @Override
@@ -53,14 +56,14 @@ public class InventoryProductServiceImpl implements InventoryProductService {
 
         InventoryProductEntity saved = repository.save(product);
 
-        return new Response<>(InventoryProductResponse.of(saved), Status.SUCCESS, "product updated successfully", null);
+        return new Response<>(InventoryProductResponse.of(saved), Status.SUCCESS, "producto actualizado exitosamente", null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Response<InventoryProductResponse> findProductInInventory(Long inventoryId, String businessId, String barcode) {
         InventoryProductEntity product = this.findProductInInventory(businessId, barcode, inventoryId);
-        return new Response<>(InventoryProductResponse.of(product), Status.SUCCESS, "product found successfully", null);
+        return new Response<>(InventoryProductResponse.of(product), Status.SUCCESS, "producto creado correctamente", null);
     }
 
     @Transactional(readOnly = true)
@@ -68,7 +71,22 @@ public class InventoryProductServiceImpl implements InventoryProductService {
         ProductEntity product = productRepository.findByBarcodeAndBusinessId(barcode, businessId).orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
         InventoryEntity inventory = inventoryRepository.findById(inventoryId).orElseThrow(() -> new ResourceNotFoundException("Inventory not found!"));
 
-        return repository.findByInventoryIdAndProductId(inventory.getId(), product.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+        return repository.findByInventoryIdAndProductId(inventoryId, product.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado!"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Response<List<InventoryProductResponse>> findAllProductInInventory(Long inventoryId, String businessId) {
+      List<InventoryProductEntity> list = repository.findAllByInventoryIdAndBusinessId(inventoryId, businessId);
+      List<InventoryProductResponse> result = list.stream().map(InventoryProductResponse::of).toList();
+      return new Response<>(result, Status.SUCCESS, "productos encontrados", null);
+    }
+
+    @Transactional(readOnly = true)
+    public Response<List<InventoryProductResponse>> searchByMatching(String match, String businessId) {
+        List<InventoryProductEntity> list = repository.searchByMatching(match, businessId);
+        List<InventoryProductResponse> result = list.stream().map(InventoryProductResponse::of).toList();
+        return new Response<>(result, Status.SUCCESS, null, null);
     }
 }

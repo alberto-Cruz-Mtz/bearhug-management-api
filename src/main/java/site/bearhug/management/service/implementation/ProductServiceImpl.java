@@ -7,11 +7,14 @@ import site.bearhug.management.persistence.entity.products.ProductCategoryEntity
 import site.bearhug.management.persistence.entity.products.ProductEntity;
 import site.bearhug.management.persistence.repository.product.ProductCategoryRepository;
 import site.bearhug.management.persistence.repository.product.ProductRepository;
+import site.bearhug.management.presentation.dto.ProductMatchResponse;
 import site.bearhug.management.presentation.dto.Response;
 import site.bearhug.management.presentation.dto.model.Product;
 import site.bearhug.management.presentation.dto.model.Status;
 import site.bearhug.management.service.exception.ResourceNotFoundException;
 import site.bearhug.management.service.interfaces.ProductService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -71,9 +74,28 @@ public class ProductServiceImpl implements ProductService {
         return new Response<>(Product.of(product), Status.SUCCESS, "Product found successfully", null);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Response<List<Product>> findAllProduct(String businessId) {
+        List<ProductEntity> list = repository.findAllByBusinessId(businessId);
+        List<Product> products = list.stream().map(Product::of).toList();
+
+        return new Response<>(products, Status.SUCCESS, "productos encontrados", null);
+    }
+
     @Transactional(readOnly = true)
     public ProductEntity findProductEntity(String barcode, String businessId) {
         return repository.findByBarcodeAndBusinessId(barcode, businessId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Response<List<ProductMatchResponse>> findByMatch(String match, String businessId) {
+        List<ProductEntity> list = repository.searchByBarcodeOrName(match, businessId);
+        List<ProductMatchResponse> matches = list.stream().map(ProductMatchResponse::of).toList();
+
+        return new Response<>(matches, Status.SUCCESS, null, null);
     }
 }
